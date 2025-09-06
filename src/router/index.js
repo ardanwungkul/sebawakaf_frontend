@@ -35,6 +35,16 @@ const router = createRouter({
         title: 'Akun',
       },
     },
+
+    
+    {
+      path: '/testmodal',
+      name: 'testmodal',
+      component: () => import('@/pages/TestModal.vue'),
+      meta: {
+        title: 'Test Modal',
+      },
+    },
   ],
 })
 
