@@ -4,6 +4,7 @@ import { Dialog, InputNumber, InputSwitch } from 'primevue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import bismillahSVG from '@/assets/images/bismillah.svg'
+import { useWakafStore } from '@/stores/wakaf'
 
 const router = useRouter()
 const tableData = ref([
@@ -20,15 +21,16 @@ const tableData = ref([
   },
   { item: 'Bentuk AIW/SWU', temporer: 'PDF', permanen: 'PDF' },
 ])
-
 const form = ref({
   nama: null,
   no_hp: null,
   email: null,
   nominal: null,
-  hideName: false,
+  hide_name: false,
+  deskripsi: 'Wakaf',
 })
 
+const wakafStore = useWakafStore()
 onMounted(() => {
   const userDataFormString = localStorage.getItem('userDataForm')
   if (userDataFormString) {
@@ -43,6 +45,9 @@ const visible = ref(false)
 
 async function submit() {
   visible.value = true
+}
+async function payment() {
+  await wakafStore.payment(form.value)
 }
 </script>
 <template>
@@ -172,7 +177,7 @@ async function submit() {
             <span class="font-semibold text-xs"
               >Sembunyikan nama saya dari publikasi (Daftar Wakif)</span
             >
-            <InputSwitch v-model="form.hideName" />
+            <InputSwitch v-model="form.hide_name" />
           </div>
         </section>
 
@@ -214,7 +219,8 @@ async function submit() {
               <span>{{ form.nominal.toLocaleString('id-ID') }}</span> dalam bentuk Wakaf
             </p>
             <button
-              type="submit"
+              @click="payment"
+              type="button"
               class="inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all duration-300 bg-[#6b8f76] cursor-pointer text-white hover:opacity-90 py-2 px-4 w-full mt-3"
             >
               Saya Sudah Baca Ikrar dan Lanjutkan

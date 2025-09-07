@@ -1,13 +1,52 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Layouts from '@/layouts/Layouts.vue'
 import Logo from '@/assets/images/seba-wakaf-logo.png'
 import { useRouter } from 'vue-router'
 import { ProgressBar } from 'primevue'
 import FormWakaf from '@/component/modal/FormWakaf.vue'
+import Banner from '@/assets/images/banner/banner.webp'
+import { useWakafStore } from '@/stores/wakaf'
 
 const router = useRouter()
 const expanded = ref(false)
+const wakafStore = useWakafStore()
+const wakif = ref([])
+
+onMounted(async () => {
+  await wakafStore.getWakif()
+
+  wakif.value = wakafStore.wakif_data
+})
+
+function timeAgo(dateString) {
+  const now = new Date()
+  const paidAt = new Date(dateString)
+  const diffMs = now - paidAt
+
+  const diffMinutes = Math.floor(diffMs / 1000 / 60)
+  const diffHours = Math.floor(diffMinutes / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffMinutes < 1) return 'Baru saja'
+  if (diffMinutes < 60) return `${diffMinutes} menit yang lalu`
+  if (diffHours < 24) return `${diffHours} jam yang lalu`
+  return `${diffDays} hari yang lalu`
+}
+
+function formatName(item) {
+  if (!item.hide_name) return item.nama
+
+  const parts = item.nama.split(' ')
+
+  const masked = parts.map((word) => {
+    const first = word[0] || ''
+    const rest = 'x'.repeat(word.length - 1)
+    return first + rest
+  })
+
+  return masked.join(' ')
+}
 </script>
 
 <template>
@@ -38,7 +77,7 @@ const expanded = ref(false)
 
         <div class="py-3 px-5">
           <img
-            src="https://apps.satuwakaf.id/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fziswaf-asset-prod%2Fimages%2Fcampaigns%2F01JCFAKB6WRF1M2RH35GDY6MXF.jpg&w=1920&q=75"
+            :src="Banner"
             alt="Gerakan Wakaf Kemenag"
             class="w-full rounded-xl shadow object-contain"
           />
@@ -65,7 +104,16 @@ const expanded = ref(false)
           </div>
           <div>
             <p class="text-lg font-bold">Gerakan Wakaf Uang Kementerian Agama 1446 H</p>
-            <p class="text-2xl font-bold text-[#6b8f76]">Rp5.468.669.852</p>
+            <p class="text-2xl font-bold text-[#6b8f76]">
+              Rp
+              {{
+                wakif
+                  .reduce((sum, item) => {
+                    return sum + Number(item.nominal)
+                  }, 0)
+                  .toLocaleString('ID-id')
+              }}
+            </p>
             <p class="text-gray-500 text-sm">Terkumpul dana Wakaf dari Rp 10.000.000.000</p>
           </div>
 
@@ -243,99 +291,37 @@ const expanded = ref(false)
                 <p
                   class="bg-green-100 text-green-700 px-2 py-0.5 rounded-lg border border-green-200 text-sm font-semibold"
                 >
-                  5637
+                  {{ wakif.length }}
                 </p>
               </div>
             </div>
             <div class="px-5 pb-5">
-              <div class="space-y-3 mt-3">
-                <div class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg">
+              <div class="space-y-3 mt-3" v-if="wakif.length > 0">
+                <div
+                  v-for="(item, index) in wakif"
+                  :key="index"
+                  class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg"
+                >
                   <div
                     class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-bold"
                   >
-                    Y
+                    {{ item.nama[0] }}
                   </div>
                   <div class="ml-3">
-                    <p class="font-bold text-gray-900">YULIAXXXXXXXXX</p>
-                    <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p>
-                    <p class="text-sm text-gray-700 mt-1">
-                      Berwakaf sebesar <span class="font-semibold text-green-700">Rp 10.000</span>
+                    <p class="font-bold text-gray-900">{{ formatName(item) }}</p>
+                    <!-- <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p> -->
+                    <p class="text-sm text-gray-700">
+                      Berwakaf sebesar
+                      <span class="font-semibold text-green-700"
+                        >Rp {{ item.nominal.toLocaleString('id-ID') }}</span
+                      >
                     </p>
-                    <p class="text-xs text-gray-500">24 menit yang lalu</p>
+                    <p class="text-xs text-gray-500">{{ timeAgo(item.paid_at) }}</p>
                   </div>
                 </div>
               </div>
-
-              <div class="space-y-3 mt-3">
-                <div class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg">
-                  <div
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-bold"
-                  >
-                    M
-                  </div>
-                  <div class="ml-3">
-                    <p class="font-bold text-gray-900">MOZXXXXXXX</p>
-                    <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p>
-                    <p class="text-sm text-gray-700 mt-1">
-                      Berwakaf sebesar <span class="font-semibold text-green-700">Rp 10.000</span>
-                    </p>
-                    <p class="text-xs text-gray-500">24 menit yang lalu</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-3 mt-3">
-                <div class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg">
-                  <div
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-bold"
-                  >
-                    D
-                  </div>
-                  <div class="ml-3">
-                    <p class="font-bold text-gray-900">DERXXXXXXX</p>
-                    <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p>
-                    <p class="text-sm text-gray-700 mt-1">
-                      Berwakaf sebesar <span class="font-semibold text-green-700">Rp 10.000</span>
-                    </p>
-                    <p class="text-xs text-gray-500">24 menit yang lalu</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-3 mt-3">
-                <div class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg">
-                  <div
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-bold"
-                  >
-                    C
-                  </div>
-                  <div class="ml-3">
-                    <p class="font-bold text-gray-900">CANDXXXXXXXXX</p>
-                    <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p>
-                    <p class="text-sm text-gray-700 mt-1">
-                      Berwakaf sebesar <span class="font-semibold text-green-700">Rp 10.000</span>
-                    </p>
-                    <p class="text-xs text-gray-500">24 menit yang lalu</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-3 mt-3">
-                <div class="flex items-start bg-gray-100 p-3 rounded-lg shadow-lg">
-                  <div
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-600 font-bold"
-                  >
-                    I
-                  </div>
-                  <div class="ml-3">
-                    <p class="font-bold text-gray-900">ILHXXXXXXX</p>
-                    <p class="text-xs text-gray-600">Kantor Wilayah Provinsi<br />RIAU</p>
-                    <p class="text-sm text-gray-700 mt-1">
-                      Berwakaf sebesar <span class="font-semibold text-green-700">Rp 10.000</span>
-                    </p>
-                    <p class="text-xs text-gray-500">24 menit yang lalu</p>
-                  </div>
-                </div>
+              <div v-else>
+                <p class="pt-3 text-center text-sm">Tidak Ada Data Tersedia</p>
               </div>
             </div>
           </div>
