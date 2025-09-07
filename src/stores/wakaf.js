@@ -5,20 +5,43 @@ import router from '@/router'
 import { useUIStore } from '@/stores/ui'
 import { useResponseStore } from './response'
 
-export const useAuthStore = defineStore('auth', {
+export const useWakafStore = defineStore('wakaf', {
   state: () => ({
     datas: [],
+    wakif_data: [],
     data: [],
   }),
   actions: {
-    async getUserData() {
+    async getWakif() {
       const uiStore = useUIStore()
       uiStore.isLoading = true
       try {
-        const response = await API.get('/user')
-        this.user = response.data.user
+        const response = await API.get('/wakif')
+
+        this.wakif_data = response.data.data
       } catch (error) {
         console.log(error)
+      } finally {
+        uiStore.isLoading = false
+      }
+    },
+    async payment(form) {
+      const responseStore = useResponseStore()
+      const uiStore = useUIStore()
+      uiStore.isLoading = true
+      try {
+        const response = await API.post('/payment', form)
+        responseStore.addSuccess(response.data.message)
+        console.log(response)
+        window.location.href = response.data.data.invoice_url
+      } catch (error) {
+        if (error.response && error.response.status !== 422) throw error
+        const errors = error.response.data.errors
+        console.log(errors)
+
+        Object.values(errors).forEach((messages) => {
+          responseStore.addError(messages)
+        })
       } finally {
         uiStore.isLoading = false
       }
@@ -56,5 +79,5 @@ export const useAuthStore = defineStore('auth', {
   },
 })
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useWakafStore, import.meta.hot))
 }

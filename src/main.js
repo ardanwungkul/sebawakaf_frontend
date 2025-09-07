@@ -15,6 +15,9 @@ import '@/assets/js/font-awesome.min.js'
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
 import 'primeicons/primeicons.css'
+import Toast from 'primevue/toast'
+import ToastService from 'primevue/toastservice'
+import { Skeleton } from 'primevue'
 
 const app = createApp(App)
 
@@ -27,9 +30,12 @@ app.use(PrimeVue, {
     options: {
       prefix: 'p',
       darkModeSelector: 'light',
-      cssLayer: false
-    }
-  }
+      cssLayer: false,
+    },
+  },
 })
+app.use(ToastService)
+app.component('Skeleton', Skeleton)
+app.component('Toast', Toast)
 
 app.mount('#app')

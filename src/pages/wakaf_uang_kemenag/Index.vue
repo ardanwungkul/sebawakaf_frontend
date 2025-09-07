@@ -1,16 +1,18 @@
 <script setup>
 import Layouts from '@/layouts/Layouts.vue'
-import { Carousel } from 'primevue'
+import { Carousel, ProgressBar } from 'primevue'
 import { ref } from 'vue'
-
+import Banner from '@/assets/images/banner/banner.webp'
 import Banner_1 from '@/assets/images/banner/wakaf-uang-kemenag-banner-1.png'
 import Banner_2 from '@/assets/images/banner/wakaf-uang-kemenag-banner-2.png'
 import Banner_3 from '@/assets/images/banner/wakaf-uang-kemenag-banner-3.png'
 import Banner_4 from '@/assets/images/banner/wakaf-uang-kemenag-banner-4.png'
 import Banner_5 from '@/assets/images/banner/wakaf-uang-kemenag-banner-5.png'
 import Banner_6 from '@/assets/images/banner/wakaf-uang-kemenag-banner-6.png'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import Logo from '@/assets/images/seba-wakaf-logo.png'
 
+const router = useRouter()
 const route = useRoute()
 const banners = ref([
   {
@@ -53,6 +55,73 @@ const banners = ref([
             </div>
           </template>
         </Carousel>
+      </div>
+      <div class="px-5 py-3">
+        <div class="rounded-xl bg-white shadow-lg p-3">
+          <div class="space-y-5">
+            <div v-for="(data, index) in 10" :key="index">
+              <router-link
+                :to="{
+                  name: 'campaign.show',
+                  params: {
+                    slug: '1',
+                  },
+                }"
+                class="flex gap-3"
+              >
+                <div class="flex-none">
+                  <img :src="Banner" class="w-44 rounded-xl" alt="" />
+                </div>
+                <div class="space-y-1">
+                  <div
+                    class="flex gap-1 items-center bg-white text-gray-600 text-xs px-3 py-0.5 rounded-lg w-min whitespace-nowrap shadow"
+                  >
+                    <i class="fa-regular fa-location-dot"></i>
+                    <p class="text-[8px]">Seluruh Indonesia</p>
+                  </div>
+                  <div class="flex gap-1">
+                    <span
+                      class="inline-block bg-blue-500 text-white text-[8px] px-1.5 py-0.5 rounded-lg font-medium"
+                    >
+                      Wakaf
+                    </span>
+                    <span
+                      class="inline-block bg-blue-500 text-white text-[8px] px-1.5 py-0.5 rounded-lg font-medium"
+                    >
+                      Abadi
+                    </span>
+                  </div>
+                  <p class="line-clamp-1 text-xs font-medium">
+                    Gerakan Wakaf Uang Kementerian Agama 1446 H
+                  </p>
+                  <div class="flex items-center">
+                    <img :src="Logo" alt="BWI" class="w-5 h-5 rounded-full mr-3" />
+                    <div>
+                      <div class="flex items-center gap-1 text-sm text-gray-400 text-[8px]">
+                        <p class="text-xs">Lembaga Kenazhiran BWI</p>
+                        <i class="fa-solid fa-circle-check text-blue-500"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <ProgressBar
+                    :show-value="false"
+                    :pt="{
+                      root: {
+                        class: '!bg-white shadow',
+                      },
+                      value: {
+                        class: '!bg-[#6b8f76]',
+                      },
+                    }"
+                    class="!h-1"
+                    :value="50"
+                  />
+                  <p class="text-[#6b8f76] text-xs">Rp. 0</p>
+                </div>
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </Layouts>

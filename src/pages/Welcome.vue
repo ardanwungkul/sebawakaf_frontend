@@ -6,6 +6,7 @@ import PemdaJabarLogo from '@/assets/images/pemda-jabar-logo.png'
 import WakafMelaluiUangLogo from '@/assets/images/wakaf-melalui-uang.png'
 import WakafProduktif from '@/assets/images/wakaf-produktif.png'
 import WakafUang from '@/assets/images/wakaf-uang.png'
+import Banner from '@/assets/images/banner/banner.webp'
 </script>
 <template>
   <Layouts>
@@ -27,11 +28,7 @@ import WakafUang from '@/assets/images/wakaf-uang.png'
           },
         }"
       >
-        <img
-          class="object-cover cursor-pointer w-full rounded-xl shadow"
-          src="https://apps.satuwakaf.id/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fziswaf-asset-prod%2Fimages%2Fcampaigns%2F01JCFAKB6WRF1M2RH35GDY6MXF.jpg&w=1920&q=75"
-          alt=""
-        />
+        <img class="object-cover cursor-pointer w-full rounded-xl shadow-lg" :src="Banner" alt="" />
       </router-link>
     </div>
 

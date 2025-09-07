@@ -8,6 +8,7 @@ import { useResponseStore } from './stores/response'
 const ui = useUIStore()
 const responseStore = useResponseStore()
 const messages = ref([])
+const toast = useToast()
 
 watch(
   () => responseStore.errors,

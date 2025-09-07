@@ -74,7 +74,7 @@ const router = createRouter({
       name: 'campaign.show',
       component: () => import('@/pages/campaign/Show.vue'),
       meta: {
-        title: 'Akun',
+        title: 'Wakaf',
       },
     },
     {
@@ -82,7 +82,7 @@ const router = createRouter({
       name: 'campaign.checkout',
       component: () => import('@/pages/campaign/Checkout.vue'),
       meta: {
-        title: 'Akun',
+        title: 'Checkout',
       },
     },
      {
