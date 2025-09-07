@@ -27,6 +27,48 @@ const router = createRouter({
         title: 'Akun',
       },
     },
+
+    {
+      path: '/wakaf-uang-kemenag',
+      name: 'wakaf_uang_kemenag',
+      component: () => import('@/pages/wakaf_uang_kemenag/Index.vue'),
+      meta: {
+        title: 'Wakaf Uang Kemenag',
+      },
+    },
+    {
+      path: '/wakaf-uang-pemda',
+      name: 'wakaf_uang_pemda',
+      component: () => import('@/pages/wakaf_uang_pemda/Index.vue'),
+      meta: {
+        title: 'Wakaf Uang Pemda Jabar',
+      },
+    },
+    {
+      path: '/wakaf-uang',
+      name: 'wakaf_uang',
+      component: () => import('@/pages/wakaf_uang/Index.vue'),
+      meta: {
+        title: 'Wakaf Uang',
+      },
+    },
+    {
+      path: '/wakaf-melalui-uang',
+      name: 'wakaf_melalui_uang',
+      component: () => import('@/pages/wakaf_melalui_uang/Index.vue'),
+      meta: {
+        title: 'Wakaf melalui Uang',
+      },
+    },
+    {
+      path: '/wakaf-produktif',
+      name: 'wakaf_produktif',
+      component: () => import('@/pages/wakaf_produktif/Index.vue'),
+      meta: {
+        title: 'Wakaf produktif',
+      },
+    },
+
     {
       path: '/campaign/:slug',
       name: 'campaign.show',
@@ -35,14 +77,12 @@ const router = createRouter({
         title: 'Akun',
       },
     },
-
-    
     {
-      path: '/testmodal',
-      name: 'testmodal',
-      component: () => import('@/pages/TestModal.vue'),
+      path: '/campaign/:slug/checkout',
+      name: 'campaign.checkout',
+      component: () => import('@/pages/campaign/Checkout.vue'),
       meta: {
-        title: 'Test Modal',
+        title: 'Akun',
       },
     },
   ],
