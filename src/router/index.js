@@ -85,6 +85,54 @@ const router = createRouter({
         title: 'Checkout',
       },
     },
+     {
+      path: '/about-us',
+      name: 'about_us',
+      component: () => import('@/pages/AboutUs.vue'),
+      meta: {
+        title: 'Tentang Kami',
+      },
+    },
+    {
+      path: '/press-release',
+      name: 'press_release',
+      component: () => import('@/pages/PressRelease.vue'),
+      meta: {
+        title: 'Siaran Pers',
+      },
+    },
+    {
+      path: '/contact-us',
+      name: 'contact_us',
+      component: () => import('@/pages/ContactUs.vue'),
+      meta: {
+        title: 'Kontak Kami',
+      },
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('@/pages/Terms.vue'),
+      meta: {
+        title: 'Syarat & Ketentuan',
+      },
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacy_policy',
+      component: () => import('@/pages/PrivacyPolicy.vue'),
+      meta: {
+        title: 'Kebijakan Privasi',
+      },
+    },
+    {
+      path: '/question',
+      name: 'question',
+      component: () => import('@/pages/Question.vue'),
+      meta: {
+        title: 'Pertanyaan',
+      },
+    },
   ],
 })
 
